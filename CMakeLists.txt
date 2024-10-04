@@ -1,24 +1,39 @@
 cmake_minimum_required(VERSION 3.10)
 
 # Project name and version
-project(untitled2)
+project(voxelGpsImplementation)
 
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Find the Vulkan package
+# Add executable
+add_executable(voxelGpsImplementation main.cpp)
+
+# Find Vulkan package
 find_package(Vulkan REQUIRED)
 
-# Find the GLFW package
-find_package(glfw3 REQUIRED)
+# Platform-specific logic
+if(UNIX)
+    # Pour Linux
+    find_package(glfw3 REQUIRED)
+    find_package(glm REQUIRED)
+    target_include_directories(voxelGpsImplementation PRIVATE /usr/include/glm)
 
-# Find GLM package
-find_package(glm REQUIRED)
+elseif(WIN32)
+    # Pour Windows
+    set(GLFW_DIR "C:/libs/glfw")
+    set(GLM_DIR "C:/libs/glm")
 
-# Add the executable
-add_executable(untitled2 main.cpp)
+    # Ajout des chemins d'inclusion
+    target_include_directories(voxelGpsImplementation PRIVATE "${GLFW_DIR}/include")
+    target_include_directories(voxelGpsImplementation PRIVATE "${GLM_DIR}/glm")
 
-# Link the libraries (GLFW, Vulkan, and GLM)
-target_include_directories(untitled2 PRIVATE ${/usr/include/glm})
-target_link_libraries(untitled2 PRIVATE Vulkan::Vulkan glfw )
+    # Lien avec GLFW (librairie statique ou dynamique)
+    target_link_libraries(voxelGpsImplementation PRIVATE "${GLFW_DIR}/lib-mingw-w64/libglfw3.a")
+
+    # Assure-toi que glfw3.dll est dans le même répertoire que l'exécutable ou dans le PATH.
+endif()
+
+# Lien avec Vulkan
+target_link_libraries(voxelGpsImplementation PRIVATE Vulkan::Vulkan)
