@@ -14,8 +14,8 @@ https://vulkan.lunarg.com/
 
 place thoses folders in c:/libs/{
 
-    https://www.glfw.org/
-    https://github.com/g-truc/glm
+        https://www.glfw.org/
+        https://github.com/g-truc/glm
 
 }
 ```
